@@ -1,30 +1,22 @@
-import { publicIpv4, publicIpv6 } from 'public-ip';
+
 import { TbInfoCircle } from "react-icons/tb";
 import Copy from './copy';
+import { IpDetail } from "../interfaces/ipDetails";
 
-async function IpDetails () {
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-    const fetchData = async () => {
+interface IProps{
+  ipDetails: IpDetail[]
+}
 
-      try {
+async function IpDetails ({ipDetails}: IProps) {
 
-        const [ipv4Result, ipv6Result] = await Promise.all([publicIpv4(), publicIpv6()]);
-        await sleep(1000);
-        return([{ version: 'IPv4', address: ipv4Result }, { version: 'IPv6', address: ipv6Result }]);
-      } catch (error) {
-        console.error('Error fetching IP addresses:', error);
-      }
-    };
 
-    var ips = await fetchData();
-
-      if (!ips) {
+      if (!ipDetails) {
     return <p className='mt-10 text-center'>Sorry, unable to fetch your IP address.</p>;
   }
 
     return( 
     <div className='w-auto gap flex flex-col justify-center gap-4 w-100'>
-        {ips.map((ip, index) => (
+        {ipDetails.map((ip, index) => (
           <div className='w-full flex-col gap-3' key={index}>
             <div key={index} className=" left-0 top-0 flex justify-between w-auto border-b border-gray-300 bg-gradient-to-b from-zinc-200 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit static rounded-xl border lg:bg-gray-200 gap-10 items-center">
               <div className='bg-green-600 p-4 rounded-l-xl'>{ip.version}</div>
