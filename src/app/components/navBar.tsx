@@ -2,7 +2,7 @@ import { GiNinjaHead } from 'react-icons/gi'
 
 const NavBar = () => {
     return (
-        <nav className=" bg-gray-900 bg-opacity-20">
+        <nav className=" bg-gray-900 bg-opacity-20 px-48">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between p-4">
                 <a
                     className="flex items-center space-x-3 rtl:space-x-reverse"
