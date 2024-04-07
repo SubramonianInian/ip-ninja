@@ -10,7 +10,7 @@ interface IProps{
 async function IpDetails ({ipDetails}: IProps) {
 
 
-      if (!ipDetails) {
+      if (ipDetails?.length == 0) {
     return <p className='mt-10 text-center'>Sorry, unable to fetch your IP address.</p>;
   }
 

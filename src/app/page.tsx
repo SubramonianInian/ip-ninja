@@ -1,21 +1,31 @@
+'use client'
 import IpDetails from "./components/ipDetails";
 import { publicIpv4, publicIpv6 } from 'public-ip';
+import Loading from "./loading";
+import { useEffect, useState } from "react";
 import { IpDetail } from "./interfaces/ipDetails";
-export default async function Home() {
-  const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-    const fetchData = async (): Promise<IpDetail[]> => {
-      try {
+const Home = () => {
+  const [ips, setIps] = useState<IpDetail[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
         const [ipv4Result, ipv6Result] = await Promise.all([publicIpv4(), publicIpv6()]);
-        await sleep(1000);
-        return([{ version: 'IPv4', address: ipv4Result }, { version: 'IPv6', address: ipv6Result }]);
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate delay
+        setIps([{ version: 'IPv4', address: ipv4Result }, { version: 'IPv6', address: ipv6Result }]);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching IP addresses:', error);
-        return [];
       }
     };
 
-    const ips = await fetchData();
+    fetchData();
+  }, []); // Empty dependency array means it will only run once on mount
+
+  if (isLoading) {
+    return <Loading/>;
+  }
 
   return (
     <main className="flex justify-center p-48">
@@ -28,3 +38,5 @@ export default async function Home() {
     </main>
   );
 }
+
+export default Home;
